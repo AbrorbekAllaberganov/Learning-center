@@ -1,6 +1,5 @@
 package com.example.LearningCenter.entity;
 
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,39 +7,23 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
-@Entity(name = "users")
+@Entity(name="groups")
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    String firstName;
+    String name;
+    String description;
 
-    String lastName;
-
-    @Column(unique=true)
-    String email;
-
-    Date dateOfBirth;
-
-    // MALE or FEMALE
-    String gender;
-
-    String address;
+    TypeOfGroup typeOfGroup;
+    DayOfWeek dayOfWeek;
 
     @ManyToOne
-    Group group;
-
-    @OneToOne
-    Attachment file;
-
-    @OneToOne
-    Parent parent;
+    Teacher teacher;
 }

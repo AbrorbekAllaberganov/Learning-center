@@ -19,8 +19,9 @@ public class UserPayload {
     String firstName;
     String lastName;
     String address;
-    String date;
+    Long date;
     String hashId;
     String gender;
+    Long groupId;
 
 }

@@ -6,7 +6,9 @@ import com.example.LearningCenter.exceptions.BadRequest;
 import com.example.LearningCenter.exceptions.ResourceNotFound;
 import com.example.LearningCenter.payload.Result;
 import com.example.LearningCenter.payload.UserPayload;
+import com.example.LearningCenter.repository.GroupRepository;
 import com.example.LearningCenter.repository.ParentRepository;
+import com.example.LearningCenter.repository.RoleRepository;
 import com.example.LearningCenter.repository.UserRepository;
 import com.example.LearningCenter.security.SecurityUtils;
 import com.example.LearningCenter.service.AttachmentService;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -28,6 +32,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AttachmentServiceImpl attachmentService;
+    private final GroupRepository groupRepository;
+    private final RoleRepository roleRepository;
+
 
 
     @Override
@@ -36,6 +43,8 @@ public class UserServiceImpl implements UserService {
             Parent parent = new Parent();
             parent.setPhoneNumber(userPayload.getPhoneNumber());
             parent.setPassword(passwordEncoder.encode(userPayload.getPassword()));
+            parent.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_STUDENT")));
+
 
             parentRepository.save(parent);
 
@@ -48,7 +57,10 @@ public class UserServiceImpl implements UserService {
             user.setAddress(userPayload.getAddress());
             user.setGender(userPayload.getGender());
             user.setFile(attachmentService.findByHashId(userPayload.getHashId()));
-            user.setDateOfBirth(LocalDateTime.parse(userPayload.getDate()));
+            user.setDateOfBirth(new Date(userPayload.getDate()));
+            user.setGroup(groupRepository.findById(userPayload.getGroupId()).orElseThrow(
+                    ()->new ResourceNotFound("group","id",userPayload.getGroupId())
+            ));
 
             userRepository.save(user);
 
@@ -79,7 +91,10 @@ public class UserServiceImpl implements UserService {
             user.setAddress(userPayload.getAddress());
             user.setGender(userPayload.getGender());
             user.setFile(attachmentService.findByHashId(userPayload.getHashId()));
-            user.setDateOfBirth(LocalDateTime.parse(userPayload.getDate()));
+            user.setDateOfBirth(new Date(userPayload.getDate()));
+            user.setGroup(groupRepository.findById(userPayload.getGroupId()).orElseThrow(
+                    ()->new ResourceNotFound("group","id",userPayload.getGroupId())
+            ));
 
             userRepository.save(user);
 

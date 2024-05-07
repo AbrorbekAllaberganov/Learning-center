@@ -7,6 +7,7 @@ import com.example.LearningCenter.exceptions.ResourceNotFound;
 import com.example.LearningCenter.payload.Result;
 import com.example.LearningCenter.payload.TeacherPayload;
 import com.example.LearningCenter.repository.ParentRepository;
+import com.example.LearningCenter.repository.RoleRepository;
 import com.example.LearningCenter.repository.TeacherRepository;
 import com.example.LearningCenter.service.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 
 @Service
@@ -23,6 +25,7 @@ public class TeacherServiceImpl implements TeacherService {
     private final AttachmentServiceImpl attachmentService;
     private final PasswordEncoder passwordEncoder;
     private final ParentRepository parentRepository;
+    private final RoleRepository roleRepository;
 
 
     @Override
@@ -31,6 +34,7 @@ public class TeacherServiceImpl implements TeacherService {
             Parent parent = new Parent();
             parent.setPhoneNumber(teacherPayload.getPhoneNumber());
             parent.setPassword(passwordEncoder.encode(teacherPayload.getPassword()));
+            parent.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_TEACHER")));
 
             parentRepository.save(parent);
 
