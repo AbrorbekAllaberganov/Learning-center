@@ -137,4 +137,8 @@ public class UserServiceImpl implements UserService {
                 () -> new ResourceNotFound("user", "id", id)
         );
     }
+
+    public Result getUsersByGroupId(Long groupId) {
+        return Result.success(userRepository.findByGroup_id(groupId));
+    }
 }

@@ -45,4 +45,10 @@ public class UserController {
         return ResponseEntity.status(result.isStatus() ? 200 : 409).body(result);
     }
 
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<Result> getUserById(@PathVariable Long groupId){
+        Result result=userService.getUsersByGroupId(groupId);
+        return ResponseEntity.status(result.isStatus() ? 200 : 409).body(result);
+    }
+
 }
