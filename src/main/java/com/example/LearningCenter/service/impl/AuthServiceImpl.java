@@ -40,6 +40,7 @@ public class AuthServiceImpl implements AuthService{
         Map<String, Object> login = new HashMap<>();
         login.put("token", token);
         login.put("username", parent.getPhoneNumber());
+        login.put("Roles", parent.getRoles());
         login.put("success", true);
         return Result.success(login);
     }
